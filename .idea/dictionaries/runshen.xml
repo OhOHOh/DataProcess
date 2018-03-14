@@ -1,3 +1,10 @@
 <component name="ProjectDictionaryState">
-  <dictionary name="runshen" />
+  <dictionary name="runshen">
+    <words>
+      <w>dataset</w>
+      <w>perprocess</w>
+      <w>proc</w>
+      <w>vals</w>
+    </words>
+  </dictionary>
 </component>

@@ -11,7 +11,7 @@ if not os.path.exists(output_path):
     os.makedirs(output_path)
 
 # 公共列
-common_cols = ['year', 'month']
+common_cols = ['year', 'month', 'day', 'PM_US Post']
 
 # 每个城市对应的文件名及所需分析的列名
 # 以字典形式保存，如：{城市：(文件名, 列名)}
