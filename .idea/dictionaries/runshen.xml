@@ -2,6 +2,9 @@
   <dictionary name="runshen">
     <words>
       <w>dataset</w>
+      <w>dongsi</w>
+      <w>dongsihuan</w>
+      <w>nongzhanguan</w>
       <w>perprocess</w>
       <w>proc</w>
       <w>vals</w>

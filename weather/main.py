@@ -8,7 +8,7 @@ import csv
 import os
 import numpy as np
 import pandas as pd
-import config
+import config, config2
 
 def load_data(data_file, usecols):
     """
@@ -140,7 +140,7 @@ def get_china_us_pm_df(cln_data_df, suburb_cols):
     """
     pm_suburb_cols = ['PM_'+col for col in suburb_cols]
     cln_data_df['PM_China'] = cln_data_df[pm_suburb_cols].mean(axis=1)
-    proc_data_df = cln_data_df[config.common_cols + ['city', 'PM_China']]
+    proc_data_df = cln_data_df[config2.common_cols + ['city', 'PM_China']]
 
     return proc_data_df
 
@@ -177,6 +177,32 @@ def add_polluted_state_col_to_df(day_stats):
     proc_day_stats['Polluted State US'] = pd.cut(proc_day_stats['PM_US Post'], bins=bins, labels=state_labels)
 
     return proc_day_stats
+
+def compare_state_by_day(day_status):
+    """
+
+    :param
+        - day_status:
+    :return:
+        - comparison_result
+    """
+    city_names = config2.data_config_dict.keys()    # 获取城市名字 list
+    city_comparison_list = []
+    for city_name in city_names:
+        city_df = day_status[day_status['city'] == city_name]
+        city_polluted_days_count_ch = pd.value_counts(city_df['Polluted State CH']).to_frame(name=city_name+' ')
+        city_polluted_days_count_us = pd.value_counts(city_df['Polluted State US']).to_frame(name=city_name+' ')
+
+        city_comparison_list.append(city_polluted_days_count_ch)
+        city_comparison_list.append(city_polluted_days_count_us)
+
+    # 横向组合 DataFrame
+    comparison_result = pd.concat(city_comparison_list, axis=1)
+    print('\n============\n============\n============')
+    print(city_comparison_list)
+
+    return comparison_result
+
 
 
 
@@ -226,10 +252,10 @@ def main():
     #     print()
     print('接下来是任务2, 主要探讨中美之间的数据差异, 并使用 pandas')
     city_data_list = []
-    for city_name, (filename, cols) in config.data_config_dict.items():
+    for city_name, (filename, cols) in config2.data_config_dict.items():
         # == 1. 数据获取 ==
-        data_file = os.path.join(config.dataset_path, filename)
-        usecols = config.common_cols + ['PM_'+col for col in cols]
+        data_file = os.path.join(config2.dataset_path, filename)
+        usecols = config2.common_cols + ['PM_'+col for col in cols]
         # 读入数据
         data_df = pd.read_csv(data_file, usecols=usecols)
         # == 2. 数据处理 ==
@@ -257,8 +283,12 @@ def main():
     day_status = add_polluted_state_col_to_df(day_status)
     print("\n\n\n\n")
     print(day_status)
+    comparison_result = compare_state_by_day(day_status)
 
-    # == 4. 结果展示 ==
+    # == 4. 结果展示 == 统计各个污染程度的天数
+    all_data_df.to_csv(os.path.join(config2.output_path, 'all_cities_pm.csv'), index=False)
+    day_status.to_csv(os.path.join(config2.output_path, 'day_status.csv'))
+    comparison_result.to_csv(os.path.join(config2.output_path, 'comparison_result.csv'))
 
 
 

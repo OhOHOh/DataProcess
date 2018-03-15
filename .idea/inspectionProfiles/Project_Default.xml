@@ -5,6 +5,7 @@
       <option name="ignoredIdentifiers">
         <list>
           <option value="config" />
+          <option value="config2" />
         </list>
       </option>
     </inspection_tool>
