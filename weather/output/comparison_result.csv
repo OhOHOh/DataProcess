@@ -1,5 +1,5 @@
-,shanghai ,shanghai ,beijing ,beijing ,chengdu ,chengdu ,guangzhou ,guangzhou ,shenyang ,shenyang 
-good,340,375,213,205,196,111,351,376,207,205
-heavy,36,28,140,144,111,118,4,7,79,89
-light,480,489,291,299,441,480,441,412,385,388
-medium,220,184,286,282,281,320,124,125,256,245
+polluted state,chengdu_ch,chengdu_us,guangzhou_ch,guangzhou_us,shanghai_ch,shanghai_us,beijing_ch,beijing_us,shenyang_ch,shenyang_us
+good,196,111,351,376,340,375,213,205,207,205
+heavy,111,118,4,7,36,28,140,144,79,89
+light,441,480,441,412,480,489,291,299,385,388
+medium,281,320,124,125,220,184,286,282,256,245

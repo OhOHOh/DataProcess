@@ -16,7 +16,7 @@ cln_data_df = data_df.dropna()
 cln_data_df = cln_data_df.reset_index(drop=True)
 cln_data_df['city'] = 'beijing'
 
-# === 求得 beijing 3 个区的 PM 的均值
+# === 求得 beijing 3 个区的 PM 的均值, 作为中国发布的, 要和美国发布的数据进行比较
 cln_data_df['PM_China'] = cln_data_df[['PM_Dongsi', 'PM_Dongsihuan', 'PM_Nongzhanguan']].mean(axis=1)
 cln_data_df.drop(columns=['PM_Dongsi', 'PM_Dongsihuan', 'PM_Nongzhanguan'], inplace=True)
 
@@ -37,13 +37,27 @@ cln_data_df.drop(columns=['PM_China', 'PM_US Post'], inplace=True)
 # === 统计 中美 两国对各个等级，天数的比较
 city_polluted_state_count_ch = pd.value_counts(cln_data_df['PM_State CH']).to_frame()
 city_polluted_state_count_us = pd.value_counts(cln_data_df['PM_State US']).to_frame()
+series_city_polluted_state_count_us = pd.value_counts(cln_data_df['PM_State US'])
+series_city_polluted_state_count_us.index.name = 'polluted state'
+# print(series_city_polluted_state_count_us)
+# print(series_city_polluted_state_count_us.index)
+series_city_polluted_state_count_ch = pd.value_counts(cln_data_df['PM_State CH'])
+series_city_polluted_state_count_ch.index.name = 'polluted state'
+df_city_polluted_state_count_ch = series_city_polluted_state_count_ch.to_frame(name='beijing_CH')
+df_city_polluted_state_count_us = series_city_polluted_state_count_us.to_frame(name='beijing_US')
+
 # compare_result = pd.concat(city_polluted_state_count_ch, city_polluted_state_count_us)
 compare_result = pd.concat(objs=[city_polluted_state_count_ch, city_polluted_state_count_us], axis=1)
+compare_result.index.name = 'hahaha'
 
-compare_result.to_csv(os.path.join(config2.output_path, 'beijing_CH_US.csv'))
+compare_result2 = pd.concat(objs=[df_city_polluted_state_count_ch, df_city_polluted_state_count_us], axis=1)
 
-print(city_polluted_state_count_us)
-print(type(city_polluted_state_count_ch))
+compare_result2.to_csv(os.path.join(config2.output_path, 'beijing_CH_US.csv'))
+
+print(compare_result2)
 print(compare_result)
+# print(city_polluted_state_count_us)
+# print(type(city_polluted_state_count_ch))
+# print(compare_result)
 # print(cln_data_df.head(10))
 

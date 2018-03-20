@@ -190,16 +190,27 @@ def compare_state_by_day(day_status):
     city_comparison_list = []
     for city_name in city_names:
         city_df = day_status[day_status['city'] == city_name]
-        city_polluted_days_count_ch = pd.value_counts(city_df['Polluted State CH']).to_frame(name=city_name+' ')
-        city_polluted_days_count_us = pd.value_counts(city_df['Polluted State US']).to_frame(name=city_name+' ')
+
+        city_polluted_days_count_ch = pd.value_counts(city_df['Polluted State CH']).to_frame(name=city_name + '_ch')
+        city_polluted_days_count_us = pd.value_counts(city_df['Polluted State US']).to_frame(name=city_name + '_us')
+
+        series_city_polluted_days_count_ch = pd.value_counts(city_df['Polluted State CH'])
+        series_city_polluted_days_count_ch.index.name = 'polluted state'
+        df_city_polluted_days_count_ch = series_city_polluted_days_count_ch.to_frame(name=city_name+'_ch')
+
+        series_city_polluted_days_count_us = pd.value_counts(city_df['Polluted State US'])
+        series_city_polluted_days_count_us.index.name = 'polluted state'
+        df_city_polluted_days_count_us = series_city_polluted_days_count_us.to_frame(name=city_name+'_us')
 
         city_comparison_list.append(city_polluted_days_count_ch)
         city_comparison_list.append(city_polluted_days_count_us)
 
     # 横向组合 DataFrame
     comparison_result = pd.concat(city_comparison_list, axis=1)
+    comparison_result.index.name = 'polluted state'
     print('\n============\n============\n============')
     print(city_comparison_list)
+    print(comparison_result)
 
     return comparison_result
 
